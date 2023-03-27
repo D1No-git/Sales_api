@@ -1,3 +1,8 @@
+using sales_api.Interfaces.Articles;
+using sales_api.Services.Articles;
+using sales_dll.Data;
+using sales_dll.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +11,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Services
+builder.Services.AddSingleton<IDapperContext, DapperContext>();
+builder.Services.AddTransient<IArticlesService, ArticlesService>();
 
 var app = builder.Build();
 

@@ -1,10 +1,12 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Http.HttpResults;
+using sales_api.Helpers.Articles;
 using sales_api.Interfaces.Articles;
 using sales_dll.Interfaces;
 using sales_dll.Models;
 using System.Data;
 using System.Data.Common;
+using static sales_api.Helpers.Articles.ArticleRequestValidator;
 
 namespace sales_api.Services.Articles
 {
@@ -45,6 +47,7 @@ namespace sales_api.Services.Articles
         {
             try
             {
+
                 string sql = $@"SELECT Id, ArticleNumber, Name, Price, CreatedUTC 
                                 FROM articles WHERE Id = @Id";
 
@@ -62,19 +65,82 @@ namespace sales_api.Services.Articles
             }
         }
 
-        public async Task<(bool isSuccess, string? errorMessage)> PostArticleAsync(Article request)
+        public async Task<(bool isSuccess, List<ErrorMessage>? errorMessages)> PostArticleAsync(Article request)
         {
             try
             {
-                if (request == null)
-                    return (false, "Request not valid");
+                var (isSucces, errorMessages) = ValidateRequest(request);
+
+                if (!isSucces)
+                    return (false, errorMessages);
 
                 string sql = $@"BEGIN TRANSACTION;
                                 INSERT INTO articles (ArticleNumber, Name, Price, CreatedUTC)
                                 VALUES (@ArticleNumber, @Name, @Price, @CreatedUTC);
                                 COMMIT;";
 
-                var result = await _db.ExecuteAsync(sql, request);
+                await _db.ExecuteAsync(sql, request);
+
+                return (true, null);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while saving the article to the database.");
+                return (false, new List<ErrorMessage> { new ErrorMessage { ErrorMsg = "An error occurred while saving the article." } });
+            }
+        }
+
+        public async Task<(bool isSuccess, List<ErrorMessage>? errorMessages)> UpdateArticleAsync(Article request)
+        {
+            try
+            {
+                var (isSucces, errorMessages) = ValidateRequest(request);
+
+                if (!isSucces)
+                    return (false, errorMessages);
+
+                // Check if the Id exists in the database
+                var article = await _db.QuerySingleOrDefaultAsync<Article>("SELECT * FROM articles WHERE Id = @Id", new { request.Id });
+
+                if (article == null)
+                    return (false, new List<ErrorMessage> { new ErrorMessage { ErrorMsg = $"Article with id {request.Id} not found" } });
+
+                string sql = @"BEGIN TRANSACTION;
+                               UPDATE articles
+                               SET ArticleNumber = @ArticleNumber, Name = @Name, Price = @Price, CreatedUTC = @CreatedUTC
+                               WHERE Id = @Id;
+                               COMMIT;";
+
+                var parameters = new { request.ArticleNumber, request.Name, request.Price, request.CreatedUTC, request.Id };
+
+                await _db.ExecuteAsync(sql, parameters);
+
+                return (true, null);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return (false, new List<ErrorMessage> { new ErrorMessage { ErrorMsg = $"An error occurred while updating the article." } });
+            }
+        }
+
+        public async Task<(bool isSuccess, string? errorMessage)> DeleteArticleAsync(int id)
+        {
+            try
+            {
+                if (id == 0)
+                    return (false, "Requested id is 0.");
+
+                var article = await _db.QuerySingleOrDefaultAsync<Article>("SELECT * FROM articles WHERE Id = @Id", new { Id = id });
+
+                if (article == null)
+                    return (false, $"Article with id {id} not found");
+
+                string sql = $@"BEGIN TRANSACTION;
+                                DELETE FROM articles WHERE Id = @Id
+                                COMMIT;";
+
+                await _db.ExecuteAsync(sql, new { Id = id });
 
                 return (true, null);
             }

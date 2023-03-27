@@ -65,7 +65,43 @@ namespace sales_api.Controllers
                 if (result.isSuccess)
                     return Ok($"Article added.");
 
-                return NotFound("Article not created.");
+                return NotFound(result.errorMessages);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Exception: {ex.Message}, inner exception: {ex.InnerException}");
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateArticle(Article request)
+        {
+            try
+            {
+                var result = await _articleService.UpdateArticleAsync(request);
+
+                if (result.isSuccess)
+                    return Ok($"Article updated.");
+
+                return NotFound(result.errorMessages);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Exception: {ex.Message}, inner exception: {ex.InnerException}");
+            }
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteArticle(int id)
+        {
+            try
+            {
+                var result = await _articleService.DeleteArticleAsync(id);
+
+                if (result.isSuccess)
+                    return Ok($"Article deleted.");
+
+                return NotFound(result.errorMessage);
             }
             catch (Exception ex)
             {

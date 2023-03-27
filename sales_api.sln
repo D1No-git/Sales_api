@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sales_api", "sales_api\sales_api.csproj", "{C94DA31C-5F9B-4103-A60A-8EB87AA7465A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sales_dll", "sales_dll\sales_dll.csproj", "{279570E7-C948-428A-86C0-235BF0C46005}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C94DA31C-5F9B-4103-A60A-8EB87AA7465A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C94DA31C-5F9B-4103-A60A-8EB87AA7465A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C94DA31C-5F9B-4103-A60A-8EB87AA7465A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C94DA31C-5F9B-4103-A60A-8EB87AA7465A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{279570E7-C948-428A-86C0-235BF0C46005}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{279570E7-C948-428A-86C0-235BF0C46005}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{279570E7-C948-428A-86C0-235BF0C46005}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{279570E7-C948-428A-86C0-235BF0C46005}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {74717364-F2A5-4A06-B046-40CC64C0E67C}
+	EndGlobalSection
+EndGlobal

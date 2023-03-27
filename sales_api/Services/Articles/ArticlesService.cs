@@ -51,12 +51,12 @@ namespace sales_api.Services.Articles
                 string sql = $@"SELECT Id, ArticleNumber, Name, Price, CreatedUTC 
                                 FROM articles WHERE Id = @Id";
 
-                var result = await _db.QueryAsync<Article>(sql, new { Id = id });
+                var result = await _db.QuerySingleOrDefaultAsync<Article>(sql, new { Id = id });
 
-                if (!result.Any())
+                if (result == null)
                     return (false, null, "No article found.");
 
-                return (true, result.FirstOrDefault(), null);
+                return (true, result, null);
             }
             catch (Exception ex)
             {

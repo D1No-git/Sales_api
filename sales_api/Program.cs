@@ -1,5 +1,7 @@
 using sales_api.Interfaces.Articles;
+using sales_api.Interfaces.Sales;
 using sales_api.Services.Articles;
+using sales_api.Services.Sales;
 using sales_dll.Data;
 using sales_dll.Interfaces;
 
@@ -15,6 +17,7 @@ builder.Services.AddSwaggerGen();
 // Services
 builder.Services.AddSingleton<IDapperContext, DapperContext>();
 builder.Services.AddTransient<IArticlesService, ArticlesService>();
+builder.Services.AddTransient<ISalesService, SalesService>();
 
 var app = builder.Build();
 

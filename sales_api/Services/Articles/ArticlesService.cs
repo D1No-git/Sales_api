@@ -14,7 +14,7 @@ namespace sales_api.Services.Articles
     {
         private readonly IDapperContext _context;
         private readonly ILogger<ArticlesService> _logger;
-        private IDbConnection _db;
+        private readonly IDbConnection _db;
 
         public ArticlesService(IDapperContext context, ILogger<ArticlesService> logger)
         {
@@ -131,6 +131,7 @@ namespace sales_api.Services.Articles
                 if (id == 0)
                     return (false, "Requested id is 0.");
 
+                // Check if the Id exists in the database
                 var article = await _db.QuerySingleOrDefaultAsync<Article>("SELECT * FROM articles WHERE Id = @Id", new { Id = id });
 
                 if (article == null)

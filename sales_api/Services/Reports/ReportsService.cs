@@ -1,11 +1,11 @@
 ﻿using Dapper;
+using sales_api.Interfaces.Reports;
 using sales_api.Models.Reports;
-using sales_api.Services.Reports;
 using sales_dll.Interfaces;
 using System.Data;
 using System.Text;
 
-namespace sales_api.Interfaces.Reports
+namespace sales_api.Services.Reports
 {
     public class ReportsService : IReportsService
     {

@@ -1,6 +1,6 @@
 ﻿using sales_api.Models.Reports;
 
-namespace sales_api.Services.Reports
+namespace sales_api.Interfaces.Reports
 {
     public interface IReportsService : IDisposable
     {

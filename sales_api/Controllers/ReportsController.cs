@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using sales_api.Services.Reports;
+﻿using Microsoft.AspNetCore.Mvc;
+using sales_api.Interfaces.Reports;
 
 namespace sales_api.Controllers
 {

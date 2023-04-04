@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using sales_api.Services.Reports;
 
 namespace sales_api.Controllers
 {
@@ -7,5 +8,68 @@ namespace sales_api.Controllers
     [ApiController]
     public class ReportsController : ControllerBase
     {
+        private readonly IReportsService _reportsService;
+
+        public ReportsController(IReportsService reportsService)
+        {
+            _reportsService = reportsService;
+        }
+
+        [HttpGet]
+        [Route("GetNumberArticlesSoldPerDay")]
+        public async Task<IActionResult> GetNumberArticlesSoldPerDay(DateTime? reportDate)
+        {
+            try
+            {
+                var result = await _reportsService.GetNumberArticlesSoldPerDay(reportDate);
+
+                if (result.isSuccess)
+                    return Ok(result.salesReports);
+
+                return NotFound(result.errorMessage);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Exception: {ex.Message}, inner exception: {ex.InnerException}");
+            }
+        }
+
+        [HttpGet]
+        [Route("TotalRevenuePerDay")]
+        public async Task<IActionResult> GetTotalRevenuePerDay(DateTime? reportDate)
+        {
+            try
+            {
+                var result = await _reportsService.GetTotalRevenuePerDay(reportDate);
+
+                if (result.isSuccess)
+                    return Ok(result.revenueReports);
+
+                return NotFound(result.errorMessage);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Exception: {ex.Message}, inner exception: {ex.InnerException}");
+            }
+        }
+
+        [HttpGet]
+        [Route("GetStatistics")]
+        public async Task<IActionResult> GetStatistics()
+        {
+            try
+            {
+                var result = await _reportsService.GetStatistics();
+
+                if (result.isSuccess)
+                    return Ok(result.statisticsReports);
+
+                return NotFound("No statistics found.");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Exception: {ex.Message}, inner exception: {ex.InnerException}");
+            }
+        }
     }
 }

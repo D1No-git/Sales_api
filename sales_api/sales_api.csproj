@@ -15,9 +15,4 @@
     <ProjectReference Include="..\sales_dll\sales_dll.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces\Reports\" />
-    <Folder Include="Services\Reports\" />
-  </ItemGroup>
-
 </Project>
